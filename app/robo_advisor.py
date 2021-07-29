@@ -9,14 +9,34 @@ from dotenv import load_dotenv
 
 import requests 
 
+import re 
+
 load_dotenv()
 
 def to_usd(my_price):
     return "${0:,.2f}".format(my_price)
-
-#info inputs
 api_key=os.environ.get("ALPHAVANTAGE_API_KEY")       #"demo"
-symbol="MSFT"
+
+symbol=input("PLEASE INPUT ONE STOCK OR CRYPTOCURRENCY SYMBOL: ")
+symbol=symbol.upper()
+
+def validate(): 
+    while True:
+        if (len(symbol)<1 or len(symbol)>5):
+            print("PLEASURE ENSURE YOUR SYMBOL HAS BETWEEN 1 and 5 CHARACTERS")
+        elif re.search("[0-9]",symbol):
+            print("PLEASURE ENSURE YOUR SYMBOL DOESN'T CONTAIN A NUMBER")
+        elif re.search("[$#@]",symbol):
+            print("PLEASURE ENSURE YOUR SYMBOL DOESN'T CONTAIN $#@")
+        elif re.search(f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={api_key}",symbol):
+            print("SORRY, COULDN'T FIND ANY TRADING DATA FOR THAT STOCK SYMBOL. PLEASE TRY AGAIN")
+        else:
+            print("YOUR SYMBOL IS VALID")
+        break
+validate() 
+
+#need to work on the last elif ask professor 
+
 
 request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={api_key}"
 
@@ -78,7 +98,7 @@ with open(csv_file_path, "w") as csv_file: # "w" means "open the file for writin
   
 
 print("-------------------------")
-print("SELECTED SYMBOL: XYZ")
+print(f"SELECTED SYMBOL: {symbol}")
 print("-------------------------")
 print("REQUESTING STOCK MARKET DATA...")
 print("REQUEST AT: 2018-02-20 02:00pm")
