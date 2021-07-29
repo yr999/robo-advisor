@@ -11,6 +11,8 @@ import requests
 
 import re 
 
+from datetime import datetime as dt
+
 load_dotenv()
 
 def to_usd(my_price):
@@ -96,12 +98,23 @@ with open(csv_file_path, "w") as csv_file: # "w" means "open the file for writin
             })
     
   
+current_date = dt.today()
+current_time=dt.now()
+
+run_date=current_date.strftime("%B %d,%Y")
+run_time=current_time.strftime("%I:%M %p")
+
+breakpoint
+
+#last_ref=last_refreshed("%B %d,%Y")
+
+
 
 print("-------------------------")
 print(f"SELECTED SYMBOL: {symbol}")
 print("-------------------------")
 print("REQUESTING STOCK MARKET DATA...")
-print("REQUEST AT: 2018-02-20 02:00pm")
+print("REQUEST AT: ", run_time, "on", run_date)   #Run at: 11:52pm on June 5th, 2018
 print("-------------------------")
 print(f"LATEST DAY: {last_refreshed}")
 print(f"LATEST CLOSE: {to_usd(float(latest_close))}")
