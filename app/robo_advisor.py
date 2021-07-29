@@ -102,12 +102,16 @@ current_date = dt.today()
 current_time=dt.now()
 
 run_date=current_date.strftime("%B %d,%Y")
-run_time=current_time.strftime("%I:%M %p")
+run_time=current_time.strftime("%I:%M %p %Z")
 
 breakpoint
 
-#last_ref=last_refreshed("%B %d,%Y")
+last_ref_date_obj=dt.strptime(last_refreshed,'%Y-%m-%d').date()
 
+#print(last_ref_date_obj)
+#print(type(last_ref_date_obj))
+
+last_ref_date=last_ref_date_obj.strftime("%B %d,%Y")
 
 
 print("-------------------------")
@@ -116,7 +120,7 @@ print("-------------------------")
 print("REQUESTING STOCK MARKET DATA...")
 print("REQUEST AT: ", run_time, "on", run_date)   #Run at: 11:52pm on June 5th, 2018
 print("-------------------------")
-print(f"LATEST DAY: {last_refreshed}")
+print(f"LATEST DAY: {last_ref_date}")
 print(f"LATEST CLOSE: {to_usd(float(latest_close))}")
 print(f"RECENT HIGH: {to_usd(float(recent_high))}")
 print(f"RECENT LOW: {to_usd(float(recent_low))}")
