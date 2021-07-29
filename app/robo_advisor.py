@@ -19,25 +19,38 @@ def to_usd(my_price):
     return "${0:,.2f}".format(my_price)
 api_key=os.environ.get("ALPHAVANTAGE_API_KEY")       #"demo"
 
+risk=input("PLEASE PICK YOUR RISK TOLERRANCE: HIGH, MEDIUM and LOW: ")
+
+risk=risk.upper()
+
+if  risk == "HIGH" or (risk == "MEDIUM") or (risk == "LOW"):
+    print("VALID RISK")
+else:
+    print("OOPS, INVALID RISK, PLEASE TRY AGAIN")
+    exit()
+
+print ("YOUR RISK TOLERANCE IS: ", risk) 
+
+
 symbol=input("PLEASE INPUT ONE STOCK OR CRYPTOCURRENCY SYMBOL: ")
 symbol=symbol.upper()
 
 def validate(): 
     while True:
         if (len(symbol)<1 or len(symbol)>5):
-            print("PLEASURE ENSURE YOUR SYMBOL HAS BETWEEN 1 and 5 CHARACTERS")
+            print("OOPS, PLEASURE ENSURE YOUR SYMBOL HAS BETWEEN 1 and 5 CHARACTERS")
         elif re.search("[0-9]",symbol):
-            print("PLEASURE ENSURE YOUR SYMBOL DOESN'T CONTAIN A NUMBER")
+            print("OOPS, PLEASURE ENSURE YOUR SYMBOL DOESN'T CONTAIN A NUMBER")
         elif re.search("[$#@]",symbol):
-            print("PLEASURE ENSURE YOUR SYMBOL DOESN'T CONTAIN $#@")
+            print("OOPS, PLEASURE ENSURE YOUR SYMBOL DOESN'T CONTAIN $#@")
         elif re.search(f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={api_key}",symbol):
-            print("SORRY, COULDN'T FIND ANY TRADING DATA FOR THAT STOCK SYMBOL. PLEASE TRY AGAIN")
+            print("OOPS, COULDN'T FIND ANY TRADING DATA FOR THAT STOCK SYMBOL. PLEASE TRY AGAIN")
         else:
-            print("YOUR SYMBOL IS VALID")
+            print("VALID SYMBOL")
         break
 validate() 
 
-#need to work on the last elif ask professor 
+#need to work on the last elif HTTP ASK PROF
 
 
 request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={api_key}"
@@ -102,9 +115,9 @@ current_date = dt.today()
 current_time=dt.now()
 
 run_date=current_date.strftime("%B %d,%Y")
-run_time=current_time.strftime("%I:%M %p %Z")
+run_time=current_time.strftime("%I:%M %p")
 
-breakpoint
+#breakpoint
 
 last_ref_date_obj=dt.strptime(last_refreshed,'%Y-%m-%d').date()
 
@@ -113,6 +126,7 @@ last_ref_date_obj=dt.strptime(last_refreshed,'%Y-%m-%d').date()
 
 last_ref_date=last_ref_date_obj.strftime("%B %d,%Y")
 
+# do we need th in June 5th, 2018? ASK PROF
 
 print("-------------------------")
 print(f"SELECTED SYMBOL: {symbol}")
