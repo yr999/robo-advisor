@@ -1,6 +1,6 @@
 # robo-advisor
 
-This Python application automates the process of providing my clients with stock trading recommendations. It accepts one or more stock or cryptocurrency symbols as information inputs, then it requests real live historical trading data from the internet, and finally provides a recommendation as the whether or not the client should purchase the given stocks or cryptocurrencies. 
+This Python application automates the process of providing my clients with stock trading recommendations. It accepts one stock or cryptocurrency symbol as information inputs, then it requests real live historical trading data from the internet, and finally provides a recommendation as the whether or not the client should purchase the given stock or cryptocurrency. 
 
 Prerequisites
 
@@ -28,7 +28,9 @@ Setup
 
 In the root directory of your local repository, create a new file called ".env", and update the contents of the ".env" file to specify your desired username (then make sure to SAVE the ".env" file aftwards):
 
-ALPHAVANTAGE_API_KEY="abc123"
+Get your own free API key from https://www.alphavantage.co and input it below in .env. 
+
+ALPHAVANTAGE_API_KEY="Your API key"
 NOTE: the ".env" file is usually the place for passing configuration options and secret credentials, so as a best practice we don't upload this file to version control (which is accomplished via a corresponding entry in the ".gitignore" file). This means we need to instruct each person who uses our code needs to create their own local ".env" file. 
 
 The ".gitignore" file generated during the GitHub repo creation process should already do this, otherwise you can create your own ".gitignore" file and place inside the following contents:

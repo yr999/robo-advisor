@@ -17,7 +17,6 @@ from datetime import datetime as dt
 
 load_dotenv()
 
-
 #FORMATS PRICES 
 
 def to_usd(my_price):
@@ -139,9 +138,9 @@ run_time=current_time.strftime("%I:%m %p")
 
 #last_ref_date_obj=dt.strptime(last_refreshed,'%Y-%m-%d %H:%M:%S').date() 
 
-last_ref_date_obj=dt.strptime(last_refreshed,'%Y-%m-%d').date() 
+#last_ref_date_obj=dt.strptime(last_refreshed,'%Y-%m-%d').date() 
 
-last_ref_date=last_ref_date_obj.strftime("%B %d,%Y")
+#last_ref_date=last_ref_date_obj.strftime("%B %d,%Y")
 
 #OUTPUTS & RECOMMENDATION 
 
@@ -151,7 +150,7 @@ print("-------------------------")
 print("REQUESTING STOCK MARKET DATA...")
 print("REQUEST AT: ", run_time, "on", run_date)   #Run at: 11:52pm on June 5th, 2018
 print("-------------------------")
-print(f"LATEST DAY: {last_ref_date}")
+print(f"LATEST DAY: {last_refreshed}")
 print(f"LATEST CLOSE: {to_usd(float(latest_close))}")
 print(f"RECENT HIGH: {to_usd(float(recent_high))}")
 print(f"RECENT LOW: {to_usd(float(recent_low))}")
@@ -175,4 +174,6 @@ print(f"WRITING DATA to CSV: {csv_file_path}")
 print("-------------------------")
 print("HAPPY INVESTING!")
 print("-------------------------")
+
+
 
