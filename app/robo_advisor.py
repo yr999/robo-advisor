@@ -126,7 +126,7 @@ with open(csv_file_path, "w") as csv_file: # "w" means "open the file for writin
             })
     
 
-#BONUS FOR FORMATING DATES
+#BONUS FOR FORMATING DATES AND FORMATING PRICES IN CSV FILE
 
 current_date = dt.today()
 current_time=dt.now()
@@ -143,11 +143,7 @@ last_ref_date_obj=dt.strptime(last_refreshed,'%Y-%m-%d').date()
 
 last_ref_date=last_ref_date_obj.strftime("%B %d,%Y")
 
-#RECOMMENDATION 
-
-#if the risk tolerance is high, then 
-
-#if risk=="HIGH" and ""
+#OUTPUTS & RECOMMENDATION 
 
 print("-------------------------")
 print(f"SELECTED SYMBOL: {symbol}")
@@ -160,8 +156,20 @@ print(f"LATEST CLOSE: {to_usd(float(latest_close))}")
 print(f"RECENT HIGH: {to_usd(float(recent_high))}")
 print(f"RECENT LOW: {to_usd(float(recent_low))}")
 print("-------------------------")
-print("RECOMMENDATION: BUY!")
-print("RECOMMENDATION REASON: TODO")
+
+if risk=="HIGH" and float(latest_close)<=float(recent_high)*.9:
+    print("RECOMMENDATION: BUY!")
+    print("RECOMMENDATION REASON: ACTION SUITS YOUR RISK TOLERANCE")
+elif risk=="MEDIUM" and float(latest_close)<=float(recent_high)*.7:
+    print("RECOMMENDATION: BUY!")
+    print("RECOMMENDATION REASON: ACTION SUITS YOUR RISK TOLERANCE")
+elif risk=="LOW" and float(latest_close)<=float(recent_high)*.5:
+    print("RECOMMENDATION: BUY!")
+    print("RECOMMENDATION REASON: ACTION SUITS YOUR RISK TOLERANCE")
+else:
+    print("DON'T BUY")
+    print("RECOMMENDATION REASON: ACTION DOESN'T SUIT YOUR RISK TOLERANCE")
+
 print("-------------------------")
 print(f"WRITING DATA to CSV: {csv_file_path}")
 print("-------------------------")
