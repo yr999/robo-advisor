@@ -1,5 +1,7 @@
 # this is the "app/robo_advisor.py" file
 
+#IMPORTS
+
 import csv
 import json 
 
@@ -15,9 +17,17 @@ from datetime import datetime as dt
 
 load_dotenv()
 
+
+#FORMATS PRICES 
+
 def to_usd(my_price):
     return "${0:,.2f}".format(my_price)
+
+#SECURITY
+
 api_key=os.environ.get("ALPHAVANTAGE_API_KEY")       #"demo"
+
+#INPUTS 
 
 risk=input("PLEASE PICK YOUR RISK TOLERRANCE: HIGH, MEDIUM and LOW: ")
 
@@ -29,11 +39,11 @@ else:
     print("OOPS, INVALID RISK, PLEASE TRY AGAIN")
     exit()
 
-print ("YOUR RISK TOLERANCE IS: ", risk) 
-
 
 symbol=input("PLEASE INPUT ONE STOCK OR CRYPTOCURRENCY SYMBOL: ")
 symbol=symbol.upper()
+
+#PRELIMINARY VALIDATIONS
 
 def validate(): 
     while True:
@@ -43,28 +53,34 @@ def validate():
             print("OOPS, PLEASURE ENSURE YOUR SYMBOL DOESN'T CONTAIN A NUMBER")
         elif re.search("[$#@]",symbol):
             print("OOPS, PLEASURE ENSURE YOUR SYMBOL DOESN'T CONTAIN $#@")
-        elif re.search(f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={api_key}",symbol):
-            print("OOPS, COULDN'T FIND ANY TRADING DATA FOR THAT STOCK SYMBOL. PLEASE TRY AGAIN")
         else:
-            print("VALID SYMBOL")
+            print("VALID VALUE")
         break
 validate() 
 
-#need to work on the last elif HTTP ASK PROF
 
+#REQUEST DATA FROM URL
 
 request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={api_key}"
 
 response=requests.get(request_url)
-#print(type(response))  #<class 'requests.models.Response'>
-#print(response.status_code) #200
-#print(response.text)   
-
+   
 parsed_response = json.loads(response.text)
+
+#VALIDATIONS
+
+response_keys=list(parsed_response.keys())
+
+#print(response_keys)
+
+if "Error Message" in response_keys:
+    print("OOPS, COULDN'T FIND ANY TRADING DATA FOR THAT STOCK SYMBOL. PLEASE TRY AGAIN")
+    exit()
 
 last_refreshed = parsed_response["Meta Data"]["3. Last Refreshed"]
 
-#breakpoint()
+
+#CALCULATIONS 
 
 tsd = parsed_response["Time Series (Daily)"]
 
@@ -72,9 +88,6 @@ dates=list(tsd.keys())
 latest_day = dates[0] #2021-07-26
 latest_close = tsd[latest_day]["4. close"]
 
-#max of all high prices
-
-#get high price from each day 
 high_prices=[]
 low_prices=[]
 
@@ -90,6 +103,8 @@ recent_low =min(low_prices)
 #breakpoint() 
 
 #csv_file_path = "app/prices.csv" # a relative filepath
+
+#WRITE HISTORICAL PRICES TO CVS FILE
 
 csv_file_path = os.path.join(os.path.dirname(__file__),"..","data","pices.csv")
 
@@ -110,23 +125,29 @@ with open(csv_file_path, "w") as csv_file: # "w" means "open the file for writin
             "volume": daily_prices["5. volume"]
             })
     
-  
+
+#BONUS FOR FORMATING DATES
+
 current_date = dt.today()
 current_time=dt.now()
 
 run_date=current_date.strftime("%B %d,%Y")
-run_time=current_time.strftime("%I:%M %p")
+run_time=current_time.strftime("%I:%m %p")
 
-#breakpoint
 
-last_ref_date_obj=dt.strptime(last_refreshed,'%Y-%m-%d').date()
+#sometimes last_refreshed date includes date and time if so, please use below: 
 
-#print(last_ref_date_obj)
-#print(type(last_ref_date_obj))
+#last_ref_date_obj=dt.strptime(last_refreshed,'%Y-%m-%d %H:%M:%S').date() 
+
+last_ref_date_obj=dt.strptime(last_refreshed,'%Y-%m-%d').date() 
 
 last_ref_date=last_ref_date_obj.strftime("%B %d,%Y")
 
-# do we need th in June 5th, 2018? ASK PROF
+#RECOMMENDATION 
+
+#if the risk tolerance is high, then 
+
+#if risk=="HIGH" and ""
 
 print("-------------------------")
 print(f"SELECTED SYMBOL: {symbol}")
